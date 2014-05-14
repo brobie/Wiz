@@ -120,5 +120,27 @@ Class Wiz_Plugin_Encrypt extends Wiz_Plugin_Abstract {
 		echo Wiz::tableOutput($output);
     }
     
-  }
+    /**
+     * Decrypts the file and puts the decrypted file into tmp directory of the instance.
+     *
+     * Command: wiz encrypt-decryptFile filename.IN.enc filename.IN 
+     *
+     * @author Ben Robie <brobie@gmail.com> and Ivan Kuennan <ikuennan@cds-global.com>
+     */
+    function decryptFileAction($options) {
+    	// File path and name
+    	Wiz::getMagento();
+    	$path = Mage::getStoreConfig('payment_services/cpscreditcardupdater/temp_directory');
+    	$pathFilename = Mage::getBaseDir() . "/" . $path . "/" . $options[1];
+    	
+    	$encryptedFile = Mage::helper('creditcardupdater')->getFullArchiveDirectoryPath(). "/" ."$options[0]";
+    	
+    	Mage::helper('base')->decryptFile($encryptedFile, $pathFilename);
+    	$output[] = array('Descripted File' => $pathFilename);
+    	echo "\n";
+    	echo Wiz::tableOutput($output);
+    	echo "\n";
+    
+	}
+}
 
